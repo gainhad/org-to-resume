@@ -3,6 +3,7 @@ import { Controlled as CodeMirror } from "react-codemirror2";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/material.css";
 import "codemirror/mode/css/css.js";
+import TitleBar from "./titleBar";
 
 class Editor extends React.Component {
   constructor(props) {
@@ -34,10 +35,9 @@ class Editor extends React.Component {
     }
     return (
       <div id="edit-pane" className="pane">
-        <div className="title-bar">
-          <h2>Editor</h2>
+        <TitleBar title="Editor">
           <button onClick={this.toggleDisplay}>Toggle</button>
-        </div>
+        </TitleBar>
         <CodeMirror
           id="editor"
           options={{

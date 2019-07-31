@@ -1,0 +1,49 @@
+{
+  "name": "org-to-resume",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "codemirror": "^5.47.0",
+    "html2canvas": "^1.0.0-rc.1",
+    "html2pdf.js": "^0.9.1",
+    "js-beautify": "^1.10.0",
+    "jspdf": "^1.5.3",
+    "org-mode-parser": "^0.1.3",
+    "orga-rehype": "^1.1.1",
+    "orga-unified": "^1.1.1",
+    "puppeteer": "^1.17.0",
+    "react": "^16.8.6",
+    "react-codemirror2": "^6.0.0",
+    "react-dom": "^16.8.6",
+    "react-helmet": "^5.2.1",
+    "react-scripts": "3.0.1",
+    "react-to-print": "^2.3.0",
+    "rehype-stringify": "^5.0.0",
+    "unified": "^7.1.0",
+    "unified-stream": "^1.0.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/codemirror": "0.0.74"
+  }
+}

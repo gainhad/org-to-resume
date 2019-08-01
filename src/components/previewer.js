@@ -42,7 +42,7 @@ class Previewer extends React.Component {
         <Helmet>
           <style>{style}</style>
         </Helmet>
-        <div id="preview-pane" className="pane">
+        <div id="preview-pane" className={this.props.hidden ? "hidden" : ""}>
           <TitleBar title="Preview">
             <ReactToPrint
               trigger={() => <button>Print!</button>}

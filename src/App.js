@@ -8,10 +8,12 @@ class App extends React.Component {
     super(props);
     this.state = {
       text: initialText,
-      css: initialCSS
+      css: initialCSS,
+      editorMaximized: false
     };
     this.textChange = this.textChange.bind(this);
     this.cssChange = this.cssChange.bind(this);
+    this.toggleEditorMaximized = this.toggleEditorMaximized.bind(this);
   }
 
   textChange(input) {
@@ -26,16 +28,31 @@ class App extends React.Component {
     });
   }
 
+  toggleEditorMaximized() {
+    this.setState({
+      editorMaximized: !this.state.editorMaximized
+    });
+  }
+
   render() {
     return (
-      <div id="App">
+      <div
+        id="App"
+        className={this.state.editorMaximized ? "editor-maximized" : ""}
+      >
         <Editor
           text={this.state.text}
           css={this.state.css}
           textChange={this.textChange}
           cssChange={this.cssChange}
+          toggleMaximized={this.toggleEditorMaximized}
+          isMaximized={this.state.editorMaximized}
         />
-        <Previewer text={this.state.text} css={this.state.css} />
+        <Previewer
+          text={this.state.text}
+          css={this.state.css}
+          hidden={this.state.editorMaximized}
+        />
       </div>
     );
   }

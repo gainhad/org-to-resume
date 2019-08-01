@@ -9,7 +9,8 @@ class Editor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showText: false
+      showText: false,
+      maximized: false
     };
     this.toggleDisplay = this.toggleDisplay.bind(this);
   }
@@ -32,20 +33,24 @@ class Editor extends React.Component {
       value = this.props.css;
     }
     return (
-      <div id="edit-pane" className="pane">
-        <TitleBar title="Editor">
-          <button onClick={this.toggleDisplay}>
+      <div id="edit-pane">
+        <TitleBar
+          title="Editor"
+          className={this.props.isMaximized ? "maximized" : ""}
+        >
+          <button type="button" onClick={this.toggleDisplay}>
             Show {this.state.showText ? "CSS" : "Text"}
+          </button>
+          <button type="button" onClick={this.props.toggleMaximized}>
+            {this.props.isMaximized ? "Minimize" : "Maximize"}
           </button>
         </TitleBar>
         <CodeMirror
-          id="editor"
           options={{
             mode: mode,
             lineWrapping: true,
             theme: "solarized dark"
           }}
-          className="codeEditor"
           value={value}
           onBeforeChange={(editor, data, value) => {
             onChange(value);

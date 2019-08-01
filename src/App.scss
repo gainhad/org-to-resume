@@ -4,6 +4,9 @@
   height: 100vh;
   display: grid;
   grid-template-columns: 1fr 216mm;
+  &.editor-maximized {
+    grid-template-columns: 1fr;
+  }
 }
 
 h2 {
@@ -23,6 +26,9 @@ h2 {
 
 #preview-pane {
   overflow: auto;
+  &.hidden {
+    display: none;
+  }
 }
 
 .react-codemirror2 {

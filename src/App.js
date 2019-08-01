@@ -41,14 +41,14 @@ class App extends React.Component {
   }
 }
 
-const initialText = `* John Smith :div_heading:
-** john.smith@gmail.com
+const initialText = `* John Smith :div_heading:name:
+** john.smith@gmail.com :email:
 * EDUCATION :tag1:tag-2:
 ** University of Alaska
 - Bachelor of Science in History, Minor in Computer Science
 - GPA: 3.9
   
-** Previous: Hawaiʻi Community College
+** Previous: Hawaii Community College
 
 * PROFESSIONAL EXPERIENCE
 ** Sales Manager
@@ -87,8 +87,18 @@ SuperFun Camps
 | Skill 1, Skill 2, Skill3,       | BUS 101 - Introduction to Business |
 | Skill 4, Skill 5, Skill 6       | HIS 208 - Lunar History            |`;
 
-const initialCSS = `h1 {
-  background: red;
+const initialCSS = `
+.name {
+  text-align: center;
+  border-bottom: 1px solid rgba(0, 0, 0, .3);
+  margin: 10px 35%;
+}
+
+.email {
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+  font-weight: normal;
 }`;
 
 export default App;

@@ -22,10 +22,11 @@ class Previewer extends React.Component {
 
   render() {
     const style = this.props.css
-      .split("}")
-      .map(e => (e ? "#preview  " + e : ""))
-      .join("}");
-    console.log(style);
+      .split("\n")
+      .map(e =>
+        e && e[0] !== " " && e[0] !== "}" && e[0] !== "@" ? "#preview " + e : e
+      )
+      .join("\n");
     const parsedText = toHTML(toAST(this.props.text));
     let preview;
     if (this.state.renderHTML) {

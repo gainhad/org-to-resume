@@ -49,7 +49,7 @@ class Previewer extends React.Component {
               content={() => this.componentRef}
             />
             <button className="toggle" onClick={this.onClick}>
-              Toggle HTML
+              Show {this.state.renderHTML ? "HTML" : "Preview"}
             </button>
           </TitleBar>
           {preview}

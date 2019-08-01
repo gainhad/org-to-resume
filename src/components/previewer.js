@@ -61,10 +61,6 @@ class Previewer extends React.Component {
 }
 
 class ResumePreview extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div id="preview" dangerouslySetInnerHTML={{ __html: this.props.html }} />

@@ -1,150 +1,153 @@
 function toAST(text) {
-    let orgParsed = [];
+  let orgParsed = [];
 
-    // Form for these: { level: "...", childrenReference: "..."}
-    let headingStack = [];
-    const arr = text.split('\n');
-    arr.forEach(element => {
-        // Handle headings
-        element = element.trim();
-        const top = headingStack[headingStack.length - 1];
-        if (element[0] === '*') {
-            if (top && top.type) {
-                headingStack.pop();
-            }
-            handleHeading(element, headingStack, orgParsed);
-        } else if (element[0] === '|') {
-            handleTable(element, headingStack, orgParsed);
-        } else if (element[0] === '-') {
-            handleList(element, headingStack, orgParsed);
-        } else {
-            if (top && top.type) {
-                headingStack.pop();
-            }
-            const regex = /\S/; // Exlude empty/blank lines
-            if (element.match(regex)) {
-                handleText(element, headingStack, orgParsed);
-            }
-        }
-    });
-    return orgParsed;
+  // Form for these: { level: "...", childrenReference: "..."}
+  let headingStack = [];
+  const arr = text.split("\n");
+  arr.forEach(element => {
+    // Handle headings
+    element = element.trim();
+    const top = headingStack[headingStack.length - 1];
+    if (element[0] === "*") {
+      if (top && top.type) {
+        headingStack.pop();
+      }
+      handleHeading(element, headingStack, orgParsed);
+    } else if (element[0] === "|") {
+      handleTable(element, headingStack, orgParsed);
+    } else if (element[0] === "-") {
+      handleList(element, headingStack, orgParsed);
+    } else {
+      if (top && top.type) {
+        headingStack.pop();
+      }
+      const regex = /\S/; // Exlude empty/blank lines
+      if (element.match(regex)) {
+        handleText(element, headingStack, orgParsed);
+      }
+    }
+  });
+  return orgParsed;
 }
 
 function handleHeading(heading, headingStack, orgParsed) {
-    let headingLevel = 1;
-    while (heading[headingLevel] === '*') {
-        ++headingLevel;
-    }
+  let headingLevel = 1;
+  while (heading[headingLevel] === "*") {
+    ++headingLevel;
+  }
 
-    // Remove leading asterisks and whitespace
-    heading = heading.replace(/\**\s*/, '');
-    const tags = findTags(heading);
-    // Remove tags if found and parsed
-    if (tags.length) {
-        heading = heading.replace(/:([^:]+)/g, "");
-        heading = heading.replace(/:/g, "");
-    }
-    heading = heading.trim();
-    let newHeading = {
-        type: 'Heading',
-        level: headingLevel,
-        content: heading,
-        tags: tags,
-        children: []
-    }
+  // Remove leading asterisks and whitespace
+  heading = heading.replace(/\**\s*/, "");
+  const tags = findTags(heading);
+  // Remove tags if found and parsed
+  if (tags.length) {
+    heading = heading.replace(/:([^:]+)/g, "");
+    heading = heading.replace(/:/g, "");
+  }
+  heading = heading.trim();
+  let newHeading = {
+    type: "Heading",
+    level: headingLevel,
+    content: heading,
+    tags: tags,
+    children: []
+  };
 
-    // Reset heading stack if we're at a top level heading
-    // TODO: Clean this up
-    if (headingLevel === 1) {
-        // Setting the length of an array automatically clears elements greater than the length
-        headingStack.length = 0;
+  // Reset heading stack if we're at a top level heading
+  // TODO: Clean this up
+  if (headingLevel === 1) {
+    // Setting the length of an array automatically clears elements greater than the length
+    headingStack.length = 0;
+  }
+  if (headingStack.length === 0) {
+    orgParsed.push(newHeading);
+    headingStack.push({
+      level: headingLevel,
+      childrenReference: newHeading.children
+    });
+  } else {
+    while (newHeading.level <= headingStack[headingStack.length - 1].level) {
+      headingStack.pop();
     }
     if (headingStack.length === 0) {
-        orgParsed.push(newHeading);
-        headingStack.push({
-            level: headingLevel,
-            childrenReference: newHeading.children
-        });
+      headingStack.push({
+        level: headingLevel,
+        childrenReference: newHeading.children
+      });
     } else {
-        while (newHeading.level <= headingStack[headingStack.length - 1].level) {
-            headingStack.pop();
-        }
-        if (headingStack.length === 0) {
-            headingStack.push({
-                level: headingLevel,
-                childrenReference: newHeading.children
-            })
-        } else {
-            headingStack[headingStack.length - 1].childrenReference.push(newHeading);
-            headingStack.push({
-                level: headingLevel,
-                childrenReference: newHeading.children
-            })
-        }
+      headingStack[headingStack.length - 1].childrenReference.push(newHeading);
+      headingStack.push({
+        level: headingLevel,
+        childrenReference: newHeading.children
+      });
     }
-    return;
+  }
+  return;
 }
 
 function handleText(text, headingStack, orgParsed) {
-            let newText = {
-                type: "Text",
-                content: text,
-                tags: [],
-            }
-            headingStack[headingStack.length - 1].childrenReference.push(newText);
+  let newText = {
+    type: "Text",
+    content: text,
+    tags: []
+  };
+  headingStack[headingStack.length - 1].childrenReference.push(newText);
 }
 
 function handleTable(element, headingStack, orgParsed) {
-    let top = headingStack[headingStack.length - 1];
-    if (top.type !== "table") {
-        top.childrenReference.push({
-            type: 'Table',
-            content: [],
-            tags: []
-        });
-        headingStack.push({
-            type: 'table',
-            reference: top.childrenReference[top.childrenReference.length - 1].content
-        })
-    }
-    top = headingStack[headingStack.length - 1];
-    const table = top.reference;
-    let newRow = element.split('|').filter(e => e).map(e => e.trim());
-    // Exlude divider rows
-    if (newRow[0].match(/[a-z]/gi)) {
-        table.push(newRow);
-    }
+  let top = headingStack[headingStack.length - 1];
+  if (top.type !== "table") {
+    top.childrenReference.push({
+      type: "Table",
+      content: [],
+      tags: []
+    });
+    headingStack.push({
+      type: "table",
+      reference: top.childrenReference[top.childrenReference.length - 1].content
+    });
+  }
+  top = headingStack[headingStack.length - 1];
+  const table = top.reference;
+  let newRow = element
+    .split("|")
+    .filter(e => e)
+    .map(e => e.trim());
+  // Exlude divider rows
+  if (newRow[0].match(/[a-z]/gi)) {
+    table.push(newRow);
+  }
 }
 
 function handleList(item, headingStack, orgParsed) {
-    let top = headingStack[headingStack.length - 1];
-    if (top.type !== 'list') {
-        top.childrenReference.push({
-            type: "list",
-            content: [],
-            tags: []
-        })
-        headingStack.push({
-            type: 'list',
-            // Set content reference equal to the list that was just pushed
-            contentReference: top.childrenReference[top.childrenReference.length - 1].content
-        })
-    }
-    top = headingStack[headingStack.length - 1];
-    // Remove the initial dashes
-    item = item.replace(/-+/, '').trim();
-    top.contentReference.push(item);
+  let top = headingStack[headingStack.length - 1];
+  if (top.type !== "list") {
+    top.childrenReference.push({
+      type: "list",
+      content: [],
+      tags: []
+    });
+    headingStack.push({
+      type: "list",
+      // Set content reference equal to the list that was just pushed
+      contentReference:
+        top.childrenReference[top.childrenReference.length - 1].content
+    });
+  }
+  top = headingStack[headingStack.length - 1];
+  // Remove the initial dashes
+  item = item.replace(/-+/, "").trim();
+  top.contentReference.push(item);
 }
 
 function findTags(element) {
-    const regex = /:(\S+)/g;
-    let tags = element.match(regex);
-    // if tags exist, split into individual tags and filter out empties
-    return tags ? tags[0].split(':').filter(e => e) : [];
+  const regex = /:(\S+)/g;
+  let tags = element.match(regex);
+  // if tags exist, split into individual tags and filter out empties
+  return tags ? tags[0].split(":").filter(e => e) : [];
 }
 
-const text = 
-`* EDUCATION     :tag-1:tag2:
+const text = `* EDUCATION     :tag-1:tag2:
 ** University of Michigan :tag:tag6:
 - Bachelor of Science in Economics, Minor in Computer Science
 - GPA: 3.1
@@ -186,88 +189,88 @@ Hillsdale College
 * VOLUNTEER WORK
 ** YoungLife, Team Leader
 - Supervised and managed a team of college leaders to run a youth program for middle school students
-- Coordinated with full-time staff and parent committees to ensure smooth operation of the program`
+- Coordinated with full-time staff and parent committees to ensure smooth operation of the program`;
 
 function toHTML(json) {
-    let html = '<div id="resume">';
-    json.forEach(node => {
-        html = parseNode(node, html);
-    });
-    html += '</div>'
-    return html;
+  let html = '<div id="resume">';
+  json.forEach(node => {
+    html = parseNode(node, html);
+  });
+  html += "</div>";
+  return html;
 }
 
 function parseNode(node, html) {
-    let tags = '';
-    let divClasses = '';
-    if (node.tags) {
-        divClasses = node.tags.filter(tag => tag.includes("div_")).join(' ').replace("div_", "");
-        tags = node.tags.filter(tag => !tag.includes("div_")).join(' ');
+  let tags = "";
+  let divClasses = "";
+  if (node.tags) {
+    divClasses = node.tags
+      .filter(tag => tag.includes("div_"))
+      .join(" ")
+      .replace("div_", "");
+    tags = node.tags.filter(tag => !tag.includes("div_")).join(" ");
+  }
+  if (divClasses) {
+    html += `<div class=${divClasses}>`;
+  }
+  if (node.type === "Heading") {
+    const level = node.level;
+    html += `<h${level}`;
+    if (tags) {
+      html += ` class="${tags}"`;
     }
-    if (divClasses) {
-        html += `<div class=${divClasses}>`;
+    html += ">";
+    html += `${node.content}</h${level}>`;
+  } else if (node.type === "Table") {
+    html += "<table";
+    if (tags) {
+      html += `class=${tags}`;
     }
-    if (node.type === 'Heading') {
-        const level = node.level;
-        html += `<h${level}`;
-        if(tags) {
-            html += ` class="${tags}"`;
-            console.log(html);
-        }
-        html += '>';
-        html += `${node.content}</h${level}>`;
-    } else if (node.type === 'Table') {
-        html += '<table';
-        if (tags) {
-            html += `class=${tags}`;
-        }
-        html += '>';
-        node.content.forEach((row, index) => {
-            html += '<tr>';
-            if (index === 0) {
-                row.forEach(elem => {
-                    html += `<th>${elem}</th>`;
-                });
-            } else {
-                row.forEach(elem => {
-                    html += `<td>${elem}</td>`;
-                });
-            }
-            html += '</tr>';
-        })
-        html += '</table>';
-    } else if (node.type === 'list') {
-        html += '<ul';
-        if(tags) {
-            html += ` class=${tags}`
-        }
-        html += '>';
-        node.content.forEach(item => {
-            html += `<li>${item}</li>`;
-        })
-        html += '</ul>';
-    } else {
-        html += `<p>${node.content}</p>`;
-    }
-    // Recursively walk through each child node
-    if (node.children) {
-        node.children.forEach(child => {
-            html = parseNode(child, html);
+    html += ">";
+    node.content.forEach((row, index) => {
+      html += "<tr>";
+      if (index === 0) {
+        row.forEach(elem => {
+          html += `<th>${elem}</th>`;
         });
+      } else {
+        row.forEach(elem => {
+          html += `<td>${elem}</td>`;
+        });
+      }
+      html += "</tr>";
+    });
+    html += "</table>";
+  } else if (node.type === "list") {
+    html += "<ul";
+    if (tags) {
+      html += ` class=${tags}`;
     }
-    if (divClasses) {
-        html += '</div>';
-    }
-    return html;
+    html += ">";
+    node.content.forEach(item => {
+      html += `<li>${item}</li>`;
+    });
+    html += "</ul>";
+  } else {
+    html += `<p>${node.content}</p>`;
+  }
+  // Recursively walk through each child node
+  if (node.children) {
+    node.children.forEach(child => {
+      html = parseNode(child, html);
+    });
+  }
+  if (divClasses) {
+    html += "</div>";
+  }
+  return html;
 }
-
 
 toHTML(toAST(text));
 
-export {toAST, toHTML};
+export { toAST, toHTML };
 
- /* 
+/* 
 #+TITLE: Hadley Gaines
 #+AUTHOR: Hadley.Gaines@gmail.com | (616) 889-0168 | 1704 Oxford Dr SE, Grand Rapids, MI
 */
-

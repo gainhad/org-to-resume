@@ -211,7 +211,7 @@ function parseNode(node, html) {
     tags = node.tags.filter(tag => !tag.includes("div_")).join(" ");
   }
   if (divClasses) {
-    html += `<div class=${divClasses}>`;
+    html += `<div class="${divClasses}">`;
   }
   if (node.type === "Heading") {
     const level = node.level;
@@ -224,7 +224,7 @@ function parseNode(node, html) {
   } else if (node.type === "Table") {
     html += "<table";
     if (tags) {
-      html += `class=${tags}`;
+      html += `class="${tags}"`;
     }
     html += ">";
     node.content.forEach((row, index) => {
@@ -244,7 +244,7 @@ function parseNode(node, html) {
   } else if (node.type === "list") {
     html += "<ul";
     if (tags) {
-      html += ` class=${tags}`;
+      html += ` class="${tags}"`;
     }
     html += ">";
     node.content.forEach(item => {

@@ -1,0 +1,22 @@
+@import "./themeColors.scss";
+
+.cm-s-gruvbox-dark {
+  span.cm-level-one-stars {
+    color: var(--blue);
+  }
+  span.cm-level-two-stars {
+    color: var(--purple);
+  }
+  span.cm-level-three-stars {
+    color: var(--aqua);
+  }
+  span.cm-level-four-stars {
+    color: var(--orange);
+  }
+  span.cm-level-five-stars {
+    color: var(--red);
+  }
+  span.cm-level-six-stars {
+    color: var(--yellow);
+  }
+}

@@ -4,12 +4,13 @@ import Previewer from "./components/previewer";
 import "./App.scss";
 
 class App extends React.Component {
+  //this is a comment that I can't read
   constructor(props) {
     super(props);
     this.state = {
       text: initialText,
       css: initialCSS,
-      editorMaximized: false
+      editorMaximized: true
     };
     this.textChange = this.textChange.bind(this);
     this.cssChange = this.cssChange.bind(this);

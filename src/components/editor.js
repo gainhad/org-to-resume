@@ -1,15 +1,18 @@
 import React from "react";
 import { Controlled as CodeMirror } from "react-codemirror2";
 import "codemirror/lib/codemirror.css";
-import "codemirror/theme/solarized.css";
+import "../utils/codeMirror/theme.scss";
+import "../utils/codeMirror/orgTheme.scss";
 import "codemirror/mode/css/css.js";
+import "codemirror/addon/mode/simple.js";
+import "../utils/codeMirror/codemirror-org.js";
 import TitleBar from "./titleBar";
 
 class Editor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      showText: false,
+      showText: true,
       maximized: false
     };
     this.toggleDisplay = this.toggleDisplay.bind(this);
@@ -22,10 +25,10 @@ class Editor extends React.Component {
   }
 
   render() {
-    const mode = this.state.showText ? "text" : "css";
+    const mode = this.state.showText ? "org" : "css";
     let value;
     let onChange;
-    if (mode === "text") {
+    if (mode === "org") {
       onChange = this.props.textChange;
       value = this.props.text;
     } else {
@@ -49,7 +52,7 @@ class Editor extends React.Component {
           options={{
             mode: mode,
             lineWrapping: true,
-            theme: "solarized dark"
+            theme: "gruvbox-dark"
           }}
           value={value}
           onBeforeChange={(editor, data, value) => {

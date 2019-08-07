@@ -1,6 +1,7 @@
 import React from "react";
 import Editor from "./components/editor";
 import Previewer from "./components/previewer";
+import Select from "react-select";
 import "./App.scss";
 
 class App extends React.Component {
@@ -8,24 +9,59 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      text: initialText,
-      css: initialCSS,
+      documents: [
+        {
+          title: "Demo 1",
+          text: initialText,
+          css: initialCSS
+        },
+        {
+          title: "Demo 2",
+          text: "* This is the second demo",
+          css: ""
+        }
+      ],
+      selectedDocument: 0,
       editorMaximized: true
     };
     this.textChange = this.textChange.bind(this);
     this.cssChange = this.cssChange.bind(this);
     this.toggleEditorMaximized = this.toggleEditorMaximized.bind(this);
+    this.selectedDocumentChange = this.selectedDocumentChange.bind(this);
   }
 
   textChange(input) {
-    this.setState({
-      text: input
+    this.setState(state => {
+      return {
+        documents: state.documents.map((doc, index) => {
+          if (index === state.selectedDocument) {
+            doc.text = input;
+          }
+          return doc;
+        }),
+        ...state
+      };
     });
   }
 
   cssChange(input) {
+    this.setState(state => {
+      return {
+        documents: state.documents.map((doc, index) => {
+          if (index === state.selectedDocument) {
+            doc.css = input;
+          }
+          return doc;
+        }),
+        ...state
+      };
+    });
+  }
+
+  selectedDocumentChange(input) {
+    console.log(input);
     this.setState({
-      css: input
+      selectedDocument: input.value
     });
   }
 
@@ -36,22 +72,43 @@ class App extends React.Component {
   }
 
   render() {
+    const options = this.state.documents.map((doc, index) => {
+      return {
+        value: index,
+        label: doc.title
+      };
+    });
+    const selector = (
+      <Select
+        value={{
+          value: this.state.selectedDocument,
+          label: this.state.documents[this.state.selectedDocument].title
+        }}
+        onChange={this.selectedDocumentChange}
+        options={options}
+        style={{}}
+        isSearchable={false}
+        className="documentSelectorContainer"
+        classNamePrefix="documentSelector"
+      />
+    );
     return (
       <div
         id="App"
         className={this.state.editorMaximized ? "editor-maximized" : ""}
       >
         <Editor
-          text={this.state.text}
-          css={this.state.css}
+          text={this.state.documents[this.state.selectedDocument].text}
+          css={this.state.documents[this.state.selectedDocument].css}
           textChange={this.textChange}
           cssChange={this.cssChange}
           toggleMaximized={this.toggleEditorMaximized}
           isMaximized={this.state.editorMaximized}
+          selector={selector}
         />
         <Previewer
-          text={this.state.text}
-          css={this.state.css}
+          text={this.state.documents[this.state.selectedDocument].text}
+          css={this.state.documents[this.state.selectedDocument].css}
           hidden={this.state.editorMaximized}
         />
       </div>

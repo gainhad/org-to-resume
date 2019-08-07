@@ -45,6 +45,7 @@ class Editor extends React.Component {
           <button type="button" onClick={this.toggleDisplay}>
             Show {this.state.showText ? "CSS" : "Text"}
           </button>
+          {this.props.selector}
           <button type="button" onClick={this.props.toggleMaximized}>
             {this.props.isMaximized ? "Minimize" : "Maximize"}
           </button>

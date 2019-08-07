@@ -1,7 +1,8 @@
 import React from "react";
 import { Controlled as CodeMirror } from "react-codemirror2";
 import "codemirror/lib/codemirror.css";
-import "../utils/codeMirror/theme.scss";
+import "../utils/codeMirror/gruvboxDarkTheme.scss";
+import "../utils/codeMirror/gruvboxLightTheme.scss";
 import "../utils/codeMirror/orgTheme.scss";
 import "codemirror/mode/css/css.js";
 import "codemirror/addon/mode/simple.js";
@@ -52,7 +53,7 @@ class Editor extends React.Component {
           options={{
             mode: mode,
             lineWrapping: true,
-            theme: "gruvbox-dark"
+            theme: "gruvbox-light"
           }}
           value={value}
           onBeforeChange={(editor, data, value) => {

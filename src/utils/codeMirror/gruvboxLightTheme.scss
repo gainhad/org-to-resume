@@ -1,13 +1,37 @@
-@import "themeColors.scss";
-
-.cm-s-gruvbox-dark.CodeMirror {
-	background: var(--brown);
-	color: var(--tan);
+.cm-s-gruvbox-light.CodeMirror {
+	background: var(--tan);
+	color: var(--brown);
 }
 
-.cm-s-gruvbox-dark {
+.cm-s-gruvbox-light {
+  --brown: #3c3836;
+  --red: #9d0006;
+  --blue: #076678;
+  --yellow: #b57614;
+  --purple: #8f3f71;
+  --orange: #af3a03;
+  --green: #79740e;
+  --aqua: #427b58;
+  --grey: #928374;
+  --pink: #8f3f71;
+  --tan: #fbf1c7;
+}
+
+.cm-s-gruvbox-light {
+  --org-level-one-stars: var(--blue);
+  --org-level-two-stars: var(--purple);
+  --org-level-three-stars: var(--aqua);
+  --org-level-four-stars: var(--orange);
+  --org-level-five-stars: var(--red);
+  --org-level-six-stars: var(--yellow);
+  --org-tag: var(--green);
+  --org-list: var(--grey);
+
+}
+
+.cm-s-gruvbox-light {
 	.CodeMirror-gutters {
-		background: var(--brown);
+		background: var(--tan);
 		color: var(--grey);
 		border-right: 0px;
 	}
@@ -15,7 +39,7 @@
 		color: var(--grey);
 	}
 	.CodeMirror-cursor {
-		border-left: 1px solid var(--tan);
+		border-left: 1px solid var(--brown);
 	}
 	div.CodeMirror-selected {
 		background: var(--grey);
@@ -34,26 +58,26 @@
 		color: var(--red);;
 	}
 	span.cm-variable {
-		color: var(--tan);
+		color: var(--brown);
 	}
 	span.cm-variable-2 {
-		color: var(--tan);
+		color: var(--brown);
 	}
 	span.cm-variable-3,
 	span.cm-type {
 		color: var(--yellow);
 	}
 	span.cm-operator {
-		color: var(--tan);
+		color: var(--brown);
 	}
 	span.cm-callee {
-		color: var(--tan);
+		color: var(--brown);
 	}
 	span.cm-def {
-		color: var(--tan);
+		color: var(--brown);
 	}
 	span.cm-property {
-		color: var(--tan);
+		color: var(--brown);
 	}
 	span.cm-string {
 		color: var(--green);
@@ -68,11 +92,11 @@
 		color: var(--aqua);
 	}
 	.CodeMirror-activeline-background {
-		background: var(--brown);
+		background: var(--tan);
 	}
 	.CodeMirror-matchingbracket {
 		background: var(--grey);
-		color: var(--brown) !important;
+		color: var(--tan) !important;
 	}
 	span.cm-builtin {
 		color: var(--orange);

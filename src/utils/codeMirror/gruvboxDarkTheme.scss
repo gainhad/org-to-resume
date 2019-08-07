@@ -1,0 +1,107 @@
+.cm-s-gruvbox-dark.CodeMirror {
+	background: var(--brown);
+	color: var(--tan);
+}
+
+.cm-s-gruvbox-dark {
+    --brown: #282828;
+    --red: #fb4934;
+    --blue: #83a598;
+    --yellow: #fabd2f;
+    --purple: #8f3f71;
+    --orange: #fe8019;
+    --green: #b8bb26;
+    --aqua: #8ec07c;
+    --grey: #928374;
+    --pink: #d3869b;
+    --tan: #ebdbb2;
+}
+
+.cm-s-gruvbox-dark {
+  --org-level-one-stars: var(--blue);
+  --org-level-two-stars: var(--purple);
+  --org-level-three-stars: var(--aqua);
+  --org-level-four-stars: var(--orange);
+  --org-level-five-stars: var(--red);
+  --org-level-six-stars: var(--yellow);
+  --org-tag: var(--green);
+  --org-list: var(--grey);
+
+}
+
+.cm-s-gruvbox-dark {
+	.CodeMirror-gutters {
+		background: var(--brown);
+		color: var(--grey);
+		border-right: 0px;
+	}
+	.CodeMirror-linenumber {
+		color: var(--grey);
+	}
+	.CodeMirror-cursor {
+		border-left: 1px solid var(--tan);
+	}
+	div.CodeMirror-selected {
+		background: var(--grey);
+	}
+	span.cm-meta {
+		color: var(--blue);
+	}
+	span.cm-comment {
+		color: var(--grey);
+	}
+	span.cm-number,
+	span.cm-atom {
+		color: var(--pink);
+	}
+	span.cm-keyword {
+		color: var(--red);;
+	}
+	span.cm-variable {
+		color: var(--tan);
+	}
+	span.cm-variable-2 {
+		color: var(--tan);
+	}
+	span.cm-variable-3,
+	span.cm-type {
+		color: var(--yellow);
+	}
+	span.cm-operator {
+		color: var(--tan);
+	}
+	span.cm-callee {
+		color: var(--tan);
+	}
+	span.cm-def {
+		color: var(--tan);
+	}
+	span.cm-property {
+		color: var(--tan);
+	}
+	span.cm-string {
+		color: var(--green);
+	}
+	span.cm-string-2 {
+		color: var(--aqua);
+	}
+	span.cm-qualifier {
+		color: var(--aqua);
+	}
+	span.cm-attribute {
+		color: var(--aqua);
+	}
+	.CodeMirror-activeline-background {
+		background: var(--brown);
+	}
+	.CodeMirror-matchingbracket {
+		background: var(--grey);
+		color: var(--brown) !important;
+	}
+	span.cm-builtin {
+		color: var(--orange);
+	}
+	span.cm-tag {
+		color: var(--orange);
+	}
+}

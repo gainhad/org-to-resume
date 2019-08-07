@@ -1,22 +1,25 @@
-@import "./themeColors.scss";
-
-.cm-s-gruvbox-dark {
-  span.cm-level-one-stars {
-    color: var(--blue);
-  }
-  span.cm-level-two-stars {
-    color: var(--purple);
-  }
-  span.cm-level-three-stars {
-    color: var(--aqua);
-  }
-  span.cm-level-four-stars {
-    color: var(--orange);
-  }
-  span.cm-level-five-stars {
-    color: var(--red);
-  }
-  span.cm-level-six-stars {
-    color: var(--yellow);
-  }
+span.cm-org-level-one-stars {
+    color: var(--org-level-one-stars);
+}
+span.cm-org-level-two-stars {
+    color: var(--org-level-two-stars);
+}
+span.cm-org-level-three-stars {
+    color: var(--org-level-three-stars);
+}
+span.cm-org-level-four-stars {
+    color: var(--org-level-four-stars);
+}
+span.cm-org-level-five-stars {
+    color: var(--org-level-five-stars);
+}
+span.cm-org-level-six-stars {
+    color: var(--org-level-six-stars);
+}
+span.cm-org-tag {
+    color: var(--org-tag);
+    font-style: italic;
+}
+span.cm-org-list {
+    color: var(--org-list);
 }

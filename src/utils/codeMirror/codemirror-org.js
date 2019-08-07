@@ -8,32 +8,41 @@
       {
         regex: /\*\s/,
         sol: true,
-        token: "level-one-stars"
+        token: "org-level-one-stars"
       },
       {
         regex: /\*{2}\s/,
         sol: true,
-        token: "level-two-stars"
+        token: "org-level-two-stars"
       },
       {
         regex: /\*{3}\s/,
         sol: true,
-        token: "level-three-stars"
+        token: "org-level-three-stars"
       },
       {
         regex: /\*{4}\s/,
         sol: true,
-        token: "level-four-stars"
+        token: "org-level-four-stars"
       },
       {
         regex: /\*{5}\s/,
         sol: true,
-        token: "level-five-stars"
+        token: "org-level-five-stars"
       },
       {
         regex: /\*{6,}\s/,
         sol: true,
-        token: "level-six-stars"
+        token: "org-level-six-stars"
+      },
+      {
+        regex: /:(.*):$/,
+        token: "org-tag"
+      },
+      {
+        regex: /-\s/,
+        sol: true,
+        token: "org-list"
       }
     ]
   });

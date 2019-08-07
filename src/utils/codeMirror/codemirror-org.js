@@ -58,9 +58,9 @@
         ]
       },
       {
-        regex: /-\s/,
+        regex: /(-\s)(.*)/,
         sol: true,
-        token: "org-list"
+        token: ["org-list org-dash", "org-list org-text"]
       }
     ]
   });

@@ -1,19 +1,19 @@
-span.cm-org-level-one-stars {
+span.cm-org-level-one.cm-org-stars {
     color: var(--org-level-one-stars);
 }
-span.cm-org-level-two-stars {
+span.cm-org-level-two.cm-org-stars {
     color: var(--org-level-two-stars);
 }
-span.cm-org-level-three-stars {
+span.cm-org-level-three.cm-org-stars {
     color: var(--org-level-three-stars);
 }
-span.cm-org-level-four-stars {
+span.cm-org-level-four.cm-org-stars {
     color: var(--org-level-four-stars);
 }
-span.cm-org-level-five-stars {
+span.cm-org-level-five.cm-org-stars {
     color: var(--org-level-five-stars);
 }
-span.cm-org-level-six-stars {
+span.cm-org-level-six.cm-org-stars {
     color: var(--org-level-six-stars);
 }
 span.cm-org-tag {
@@ -22,4 +22,10 @@ span.cm-org-tag {
 }
 span.cm-org-list {
     color: var(--org-list);
+}
+span.cm-org-heading {
+    font-weight: bold;
+}
+span.cm-org-level-one {
+    font-size: 1em;
 }

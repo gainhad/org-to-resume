@@ -1,43 +1,61 @@
 (mod => {
   mod(require("../../../node_modules/codemirror/lib/codemirror.js"));
 })(CodeMirror => {
-  "use strict";
-
   CodeMirror.defineSimpleMode("org", {
     start: [
       {
-        regex: /\*\s/,
+        regex: /(\*\s)(.*?)(:[\S]+:|)$/,
         sol: true,
-        token: "org-level-one-stars"
+        token: [
+          "org-level-one org-stars",
+          "org-level-one org-heading",
+          "org-level-one org-tag"
+        ]
       },
       {
-        regex: /\*{2}\s/,
+        regex: /(\*{2}\s)(.*?)(:[\S]+:|)$/,
         sol: true,
-        token: "org-level-two-stars"
+        token: [
+          "org-level-two org-stars",
+          "org-level-two org-heading",
+          "org-level-two org-tag"
+        ]
       },
       {
-        regex: /\*{3}\s/,
+        regex: /(\*{3}\s)(.*?)(:[\S]+:|)$/,
         sol: true,
-        token: "org-level-three-stars"
+        token: [
+          "org-level-three org-stars",
+          "org-level-three org-heading",
+          "org-level-three org-tag"
+        ]
       },
       {
-        regex: /\*{4}\s/,
+        regex: /(\*{4}\s)(.*?)(:[\S]+:|)$/,
         sol: true,
-        token: "org-level-four-stars"
+        token: [
+          "org-level-four org-stars",
+          "org-level-four org-heading",
+          "org-level-four org-tag"
+        ]
       },
       {
-        regex: /\*{5}\s/,
+        regex: /(\*{5}\s)(.*?)(:[\S]+:|)$/,
         sol: true,
-        token: "org-level-five-stars"
+        token: [
+          "org-level-five org-stars",
+          "org-level-five org-heading",
+          "org-level-five org-tag"
+        ]
       },
       {
-        regex: /\*{6,}\s/,
+        regex: /(\*{6,}\s)(.*?)(:[\S]+:|)$/,
         sol: true,
-        token: "org-level-six-stars"
-      },
-      {
-        regex: /:(.*):$/,
-        token: "org-tag"
+        token: [
+          "org-level-six org-stars",
+          "org-level-six org-heading",
+          "org-level-six org-tag"
+        ]
       },
       {
         regex: /-\s/,

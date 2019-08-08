@@ -1,6 +1,7 @@
 function toAST(text) {
   let orgParsed = [];
-
+  let meta = [];
+  let content = [];
   // Form for these: { level: "...", childrenReference: "..."}
   let headingStack = [];
   const arr = text.split("\n");
@@ -8,19 +9,21 @@ function toAST(text) {
     // Handle headings
     line = line.trim();
     const top = headingStack[headingStack.length - 1];
-    if (line[0] === "*") {
+    if (line[0] === "#" && line[1] === "+") {
+      handleMetaData(line, meta);
+    } else if (line[0] === "*") {
       if (top && top.type) {
         headingStack.pop();
       }
-      handleHeading(line, headingStack, orgParsed);
+      handleHeading(line, headingStack, content);
     } else if (line[0] === "|") {
       try {
-        handleTable(line, headingStack, orgParsed);
+        handleTable(line, headingStack, content);
       } catch (e) {
         throw Error("Check table formatting");
       }
     } else if (line[0] === "-") {
-      handleList(line, headingStack, orgParsed);
+      handleList(line, headingStack, content);
     } else {
       if (top && top.type) {
         headingStack.pop();
@@ -30,11 +33,20 @@ function toAST(text) {
         if (headingStack.length === 0) {
           throw Error("Text without a parent heading is not supported");
         }
-        handleText(line, headingStack, orgParsed);
+        handleText(line, headingStack, content);
       }
     }
   });
-  return orgParsed;
+  return { meta: meta, content: content };
+}
+
+function handleMetaData(line, meta) {
+  const parsed = line
+    .split("")
+    .splice(2)
+    .join("")
+    .split(": ");
+  meta = [...meta, { [parsed[0].toLowerCase()]: parsed[1] }];
 }
 
 function handleHeading(heading, headingStack, orgParsed) {
@@ -200,7 +212,7 @@ Hillsdale College
 
 function toHTML(json) {
   let html = '<div id="resume">';
-  json.forEach(node => {
+  json.content.forEach(node => {
     html = parseNode(node, html);
   });
   html += "</div>";

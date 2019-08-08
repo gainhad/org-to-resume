@@ -4,26 +4,33 @@ function toAST(text) {
   // Form for these: { level: "...", childrenReference: "..."}
   let headingStack = [];
   const arr = text.split("\n");
-  arr.forEach(element => {
+  arr.forEach(line => {
     // Handle headings
-    element = element.trim();
+    line = line.trim();
     const top = headingStack[headingStack.length - 1];
-    if (element[0] === "*") {
+    if (line[0] === "*") {
       if (top && top.type) {
         headingStack.pop();
       }
-      handleHeading(element, headingStack, orgParsed);
-    } else if (element[0] === "|") {
-      handleTable(element, headingStack, orgParsed);
-    } else if (element[0] === "-") {
-      handleList(element, headingStack, orgParsed);
+      handleHeading(line, headingStack, orgParsed);
+    } else if (line[0] === "|") {
+      try {
+        handleTable(line, headingStack, orgParsed);
+      } catch (e) {
+        throw Error("Check table formatting");
+      }
+    } else if (line[0] === "-") {
+      handleList(line, headingStack, orgParsed);
     } else {
       if (top && top.type) {
         headingStack.pop();
       }
       const regex = /\S/; // Exlude empty/blank lines
-      if (element.match(regex)) {
-        handleText(element, headingStack, orgParsed);
+      if (line.match(regex)) {
+        if (headingStack.length === 0) {
+          throw Error("Text without a parent heading is not supported");
+        }
+        handleText(line, headingStack, orgParsed);
       }
     }
   });

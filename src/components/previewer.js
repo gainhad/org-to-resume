@@ -9,7 +9,8 @@ class Previewer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      renderHTML: true
+      renderHTML: true,
+      error: true
     };
     this.onClick = this.onClick.bind(this);
   }
@@ -27,9 +28,18 @@ class Previewer extends React.Component {
         e && e[0] !== " " && e[0] !== "}" && e[0] !== "@" ? "#preview " + e : e
       )
       .join("\n");
-    const parsedText = toHTML(toAST(this.props.text));
+    let parsedText = "";
+    try {
+      parsedText = toHTML(toAST(this.props.text));
+    } catch (e) {
+      parsedText = e;
+    }
     let preview;
-    if (this.state.renderHTML) {
+    if (parsedText instanceof Error) {
+      preview = (
+        <div className="error-message">Error: {parsedText.message}</div>
+      );
+    } else if (this.state.renderHTML) {
       //TODO: find a better way to display HTML
       preview = (
         <ResumePreview html={parsedText} ref={el => (this.componentRef = el)} />
@@ -37,7 +47,6 @@ class Previewer extends React.Component {
     } else {
       preview = <pre>{beautify.html(parsedText)}</pre>;
     }
-
     return (
       <>
         <Helmet>

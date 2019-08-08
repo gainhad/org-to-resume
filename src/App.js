@@ -134,7 +134,6 @@ class App extends React.Component {
         options={options}
         isSearchable={false}
         styles={styles}
-        menuIsOpen={true}
         className="documentSelectorContainer"
         classNamePrefix="documentSelector"
       />

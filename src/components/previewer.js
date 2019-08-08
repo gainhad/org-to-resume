@@ -60,14 +60,12 @@ class Previewer extends React.Component {
         <div id="preview-pane" className={this.props.hidden ? "hidden" : ""}>
           <TitleBar title="Preview">
             <ReactToPrint
-              trigger={() => <button>Print!</button>}
+              trigger={() => (
+                <button className="tool-bar-button">Print!</button>
+              )}
               content={() => this.componentRef}
             />
-            <button
-              className="toggle"
-              className="tool-bar-button"
-              onClick={this.onClick}
-            >
+            <button className="toggle tool-bar-button" onClick={this.onClick}>
               Show {this.state.renderHTML ? "HTML" : "Preview"}
             </button>
           </TitleBar>

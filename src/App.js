@@ -8,31 +8,38 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     const selectedDocument = Number(localStorage.getItem("selectedDocument"));
+    const userDocuments = JSON.parse(localStorage.getItem("documents"));
     this.state = {
-      documents: [
-        {
-          title: "Demo 1",
-          text: demoText[0],
-          css: demoCSS[0]
-        },
-        {
-          title: "Demo 2",
-          text: demoText[1],
-          css: demoCSS[1]
-        }
-      ],
+      documents: userDocuments
+        ? [...userDocuments]
+        : [
+            {
+              title: "Demo 1",
+              text: demoText[0],
+              css: demoCSS[0],
+              changed: false
+            },
+            {
+              title: "Demo 2",
+              text: demoText[1],
+              css: demoCSS[1],
+              changed: false
+            }
+          ],
       selectedDocument: selectedDocument,
       editorMaximized: true
     };
-    const userDocuments = JSON.parse(localStorage.getItem("documents"));
-    if (userDocuments) {
-      userDocuments.forEach(doc => this.state.documents.push(doc));
-    }
     this.toggleEditorMaximized = this.toggleEditorMaximized.bind(this);
     this.selectedDocumentChange = this.selectedDocumentChange.bind(this);
     this.documentChange = this.documentChange.bind(this);
     this.deleteDocument = this.deleteDocument.bind(this);
     this.resetDemo = this.resetDemo.bind(this);
+  }
+
+  componentDidMount() {
+    window.addEventListener("beforeunload", e => {
+      localStorage.setItem("documents", JSON.stringify(this.state.documents));
+    });
   }
 
   documentChange(type, input) {
@@ -41,19 +48,15 @@ class App extends React.Component {
         documents: state.documents.map((doc, index) => {
           if (index === state.selectedDocument) {
             doc[type] = input;
+            if (state.selectedDocument < 2) {
+              doc.changed = true;
+            }
           }
           return doc;
         }),
         ...state
       };
     });
-    // Don't save demos to local storage
-    if (this.state.selectedDocument > 1) {
-      localStorage.setItem(
-        "documents",
-        JSON.stringify(this.state.documents.slice(2))
-      );
-    }
   }
 
   selectedDocumentChange(input) {
@@ -73,7 +76,6 @@ class App extends React.Component {
       this.setState({
         selectedDocument: input.value
       });
-      localStorage.setItem("selectedDocument", input.value);
     }
   }
 
@@ -111,7 +113,8 @@ class App extends React.Component {
           ? {
               title: `Demo ${index + 1}`,
               text: demoText[index],
-              css: demoCSS[index]
+              css: demoCSS[index],
+              changed: false
             }
           : doc
       )
@@ -130,7 +133,7 @@ class App extends React.Component {
             return {
               value: index,
               label: doc.title,
-              groud: "demos"
+              group: "demos"
             };
           })
         ]
@@ -152,25 +155,36 @@ class App extends React.Component {
         ]
       }
     ];
-    const customOption = ({
-      innerProps,
-      label,
-      value,
-      data,
-      ...otherProps
-    }) => {
+    const customOption = ({ innerProps, label, value, data, isSelected }) => {
       return (
-        <div>
-          <div {...innerProps}>{label}</div>
+        <div
+          className={
+            "documentSelector__option-container" +
+            (isSelected ? " selected" : "")
+          }
+          id={value === -1 ? "new-document-button" : ""}
+        >
+          <div {...innerProps} className="documentSelector__option">
+            {label}
+          </div>
           {data.group === "userDocuments" ? (
-            <button type="button" onClick={() => this.deleteDocument(value)}>
+            <button
+              type="button"
+              className="delete-document-button"
+              onClick={() => this.deleteDocument(value)}
+            >
               delete
             </button>
-          ) : (
-            <button type="button" onClick={() => this.resetDemo(value)}>
+          ) : data.group === "demos" &&
+            this.state.documents[data.value].changed ? (
+            <button
+              type="button"
+              className="reset-demo-button"
+              onClick={() => this.resetDemo(value)}
+            >
               reset
             </button>
-          )}
+          ) : null}
         </div>
       );
     };
@@ -185,7 +199,6 @@ class App extends React.Component {
         components={{ Option: customOption }}
         onChange={this.selectedDocumentChange}
         options={options}
-        menuIsOpen={true}
         isSearchable={false}
         className="documentSelectorContainer"
         classNamePrefix="documentSelector"

@@ -47,7 +47,7 @@ class App extends React.Component {
   }
 
   cssChange(input) {
-    this.setstate(state => {
+    this.setState(state => {
       return {
         documents: state.documents.map((doc, index) => {
           if (index === state.selectedDocument) {
@@ -151,6 +151,7 @@ class App extends React.Component {
 }
 
 const initialText = `#+TITLE: Demo 1
+
 * John Smith :div_heading:name:
 ** john.smith@gmail.com :email:
 * EDUCATION :tag1:tag-2:

@@ -1,3 +1,18 @@
+span.cm-org-meta {
+    font-size: 1.5em;
+    border-bottom: 1px solid var(--org-meta-underline);
+    &.cm-org-title {
+	&.cm-org-key {
+	    font-style: italic;
+	    color: var(--org-meta-key);
+
+	}
+	&.cm-org-value {
+	    font-weight: bold;
+	}
+    }
+}
+
 span.cm-org-level-one {
     font-size: 1.5em;
     &.cm-org-stars {

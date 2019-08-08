@@ -28,9 +28,14 @@ class Previewer extends React.Component {
         e && e[0] !== " " && e[0] !== "}" && e[0] !== "@" ? "#preview " + e : e
       )
       .join("\n");
+    let AST = null;
     let parsedText = "";
     try {
-      parsedText = toHTML(toAST(this.props.text));
+      AST = toAST(this.props.text);
+      if (AST.meta.title !== this.props.title) {
+        this.props.changeTitle(AST.meta.title);
+      }
+      parsedText = toHTML(AST);
     } catch (e) {
       parsedText = e;
     }

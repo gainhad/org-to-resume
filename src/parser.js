@@ -1,6 +1,5 @@
 function toAST(text) {
-  let orgParsed = [];
-  let meta = [];
+  let meta = {};
   let content = [];
   // Form for these: { level: "...", childrenReference: "..."}
   let headingStack = [];
@@ -46,7 +45,7 @@ function handleMetaData(line, meta) {
     .splice(2)
     .join("")
     .split(": ");
-  meta = [...meta, { [parsed[0].toLowerCase()]: parsed[1] }];
+  meta[parsed[0].toLowerCase()] = parsed[1];
 }
 
 function handleHeading(heading, headingStack, orgParsed) {

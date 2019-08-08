@@ -17,7 +17,8 @@ class App extends React.Component {
         },
         {
           title: "Demo 2",
-          text: "* This is the second demo",
+          text: `#+TITLE: Demo 2
+* This is the second demo`,
           css: ""
         }
       ],
@@ -28,6 +29,7 @@ class App extends React.Component {
     this.cssChange = this.cssChange.bind(this);
     this.toggleEditorMaximized = this.toggleEditorMaximized.bind(this);
     this.selectedDocumentChange = this.selectedDocumentChange.bind(this);
+    this.changeTitle = this.changeTitle.bind(this);
   }
 
   textChange(input) {
@@ -45,7 +47,7 @@ class App extends React.Component {
   }
 
   cssChange(input) {
-    this.setState(state => {
+    this.setstate(state => {
       return {
         documents: state.documents.map((doc, index) => {
           if (index === state.selectedDocument) {
@@ -59,9 +61,35 @@ class App extends React.Component {
   }
 
   selectedDocumentChange(input) {
-    console.log(input);
-    this.setState({
-      selectedDocument: input.value
+    if (input.value === -1) {
+      this.setState(state => {
+        return {
+          documents: [
+            ...state.documents,
+            { title: "", text: "#+TITLE: ", css: "" }
+          ],
+          selectedDocument: state.documents.length,
+          editorMaximized: state.editorMaximized
+        };
+      });
+    } else {
+      this.setState({
+        selectedDocument: input.value
+      });
+    }
+  }
+
+  changeTitle(input) {
+    this.setState(state => {
+      return {
+        documents: state.documents.map((doc, index) => {
+          if (index === state.selectedDocument) {
+            doc.title = input;
+          }
+          return doc;
+        }),
+        ...state
+      };
     });
   }
 
@@ -72,17 +100,21 @@ class App extends React.Component {
   }
 
   render() {
-    const options = this.state.documents.map((doc, index) => {
-      return {
-        value: index,
-        label: doc.title
-      };
-    });
+    const currentDocument = this.state.documents[this.state.selectedDocument];
+    const options = [
+      ...this.state.documents.map((doc, index) => {
+        return {
+          value: index,
+          label: doc.title
+        };
+      }),
+      { value: -1, label: "New Document" }
+    ];
     const selector = (
       <Select
         value={{
           value: this.state.selectedDocument,
-          label: this.state.documents[this.state.selectedDocument].title
+          label: currentDocument.title
         }}
         onChange={this.selectedDocumentChange}
         options={options}
@@ -98,8 +130,8 @@ class App extends React.Component {
         className={this.state.editorMaximized ? "editor-maximized" : ""}
       >
         <Editor
-          text={this.state.documents[this.state.selectedDocument].text}
-          css={this.state.documents[this.state.selectedDocument].css}
+          text={currentDocument.text}
+          css={currentDocument.css}
           textChange={this.textChange}
           cssChange={this.cssChange}
           toggleMaximized={this.toggleEditorMaximized}
@@ -107,16 +139,19 @@ class App extends React.Component {
           selector={selector}
         />
         <Previewer
-          text={this.state.documents[this.state.selectedDocument].text}
-          css={this.state.documents[this.state.selectedDocument].css}
+          text={currentDocument.text}
+          css={currentDocument.css}
           hidden={this.state.editorMaximized}
+          title={currentDocument.title}
+          changeTitle={this.changeTitle}
         />
       </div>
     );
   }
 }
 
-const initialText = `* John Smith :div_heading:name:
+const initialText = `#+TITLE: Demo 1
+* John Smith :div_heading:name:
 ** john.smith@gmail.com :email:
 * EDUCATION :tag1:tag-2:
 ** University of Alaska

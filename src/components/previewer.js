@@ -33,7 +33,7 @@ class Previewer extends React.Component {
     try {
       AST = toAST(this.props.text);
       if (AST.meta.title !== this.props.title) {
-        this.props.changeTitle(AST.meta.title);
+        this.props.documentChange("title", AST.meta.title);
       }
       parsedText = toHTML(AST);
     } catch (e) {

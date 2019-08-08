@@ -29,11 +29,12 @@ class Editor extends React.Component {
     const mode = this.state.showText ? "org" : "css";
     let value;
     let onChange;
+    // TODO: Refactor to call documentChange in codemiror
     if (mode === "org") {
-      onChange = this.props.textChange;
+      onChange = input => this.props.documentChange("text", input);
       value = this.props.text;
     } else {
-      onChange = this.props.cssChange;
+      onChange = input => this.props.documentChange("css", input);
       value = this.props.css;
     }
     return (

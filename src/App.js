@@ -8,6 +8,7 @@ class App extends React.Component {
   //this is a comment that I can't read
   constructor(props) {
     super(props);
+    const selectedDocument = Number(localStorage.getItem("selectedDocument"));
     this.state = {
       documents: [
         {
@@ -22,47 +23,43 @@ class App extends React.Component {
           css: ""
         }
       ],
-      selectedDocument: 0,
+      selectedDocument: selectedDocument,
       editorMaximized: true
     };
-    this.textChange = this.textChange.bind(this);
-    this.cssChange = this.cssChange.bind(this);
+    const userDocuments = JSON.parse(localStorage.getItem("documents"));
+    if (userDocuments) {
+      userDocuments.forEach(doc => this.state.documents.push(doc));
+    }
     this.toggleEditorMaximized = this.toggleEditorMaximized.bind(this);
     this.selectedDocumentChange = this.selectedDocumentChange.bind(this);
-    this.changeTitle = this.changeTitle.bind(this);
+    this.documentChange = this.documentChange.bind(this);
   }
 
-  textChange(input) {
+  documentChange(type, input) {
     this.setState(state => {
       return {
         documents: state.documents.map((doc, index) => {
           if (index === state.selectedDocument) {
-            doc.text = input;
+            doc[type] = input;
           }
           return doc;
         }),
         ...state
       };
     });
-  }
-
-  cssChange(input) {
-    this.setState(state => {
-      return {
-        documents: state.documents.map((doc, index) => {
-          if (index === state.selectedDocument) {
-            doc.css = input;
-          }
-          return doc;
-        }),
-        ...state
-      };
-    });
+    // Don't save demos to local storage
+    if (this.state.selectedDocument > 1) {
+      localStorage.setItem(
+        "documents",
+        JSON.stringify(this.state.documents.slice(2))
+      );
+    }
   }
 
   selectedDocumentChange(input) {
     if (input.value === -1) {
       this.setState(state => {
+        localStorage.setItem("selectedDocument", state.documents.length);
         return {
           documents: [
             ...state.documents,
@@ -76,21 +73,8 @@ class App extends React.Component {
       this.setState({
         selectedDocument: input.value
       });
+      localStorage.setItem("selectedDocument", input.value);
     }
-  }
-
-  changeTitle(input) {
-    this.setState(state => {
-      return {
-        documents: state.documents.map((doc, index) => {
-          if (index === state.selectedDocument) {
-            doc.title = input;
-          }
-          return doc;
-        }),
-        ...state
-      };
-    });
   }
 
   toggleEditorMaximized() {
@@ -132,8 +116,7 @@ class App extends React.Component {
         <Editor
           text={currentDocument.text}
           css={currentDocument.css}
-          textChange={this.textChange}
-          cssChange={this.cssChange}
+          documentChange={this.documentChange}
           toggleMaximized={this.toggleEditorMaximized}
           isMaximized={this.state.editorMaximized}
           selector={selector}
@@ -141,9 +124,9 @@ class App extends React.Component {
         <Previewer
           text={currentDocument.text}
           css={currentDocument.css}
-          hidden={this.state.editorMaximized}
           title={currentDocument.title}
-          changeTitle={this.changeTitle}
+          documentChange={this.documentChange}
+          hidden={this.state.editorMaximized}
         />
       </div>
     );

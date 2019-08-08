@@ -29,11 +29,10 @@
 	    padding: 0px 8px;
 	}
 	&__value-container {
-	    display: flex;
-	    justify-content: center;
 	}
 	&__single-value {
-	    width: 60px;
+	    width: 95%;
+	    text-align: center;
 	    color: white;
 	}
     }

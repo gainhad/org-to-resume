@@ -86,14 +86,44 @@ class App extends React.Component {
   render() {
     const currentDocument = this.state.documents[this.state.selectedDocument];
     const options = [
-      ...this.state.documents.map((doc, index) => {
-        return {
-          value: index,
-          label: doc.title
-        };
-      }),
-      { value: -1, label: "New Document" }
+      {
+        label: "Demos",
+        options: [
+          ...this.state.documents.slice(0, 2).map((doc, index) => {
+            return {
+              value: index,
+              label: doc.title
+            };
+          })
+        ]
+      },
+      {
+        label: "Your Documents",
+        options: [
+          ...this.state.documents.slice(2).map((doc, index) => {
+            return {
+              value: index,
+              label: doc.title
+            };
+          }),
+          {
+            value: -1,
+            label: "New Document",
+            color: "rgba(0, 0, 0, .7)",
+            fontStyle: "italic",
+            background: "rgba(0, 0, 0, .04)"
+          }
+        ]
+      }
     ];
+    const styles = {
+      option: (styles, { data }) => ({
+        ...styles,
+        color: data.color ? data.color : null,
+        background: data.background ? data.background : null,
+        fontStyle: data.fontStyle ? data.fontStyle : null
+      })
+    };
     const selector = (
       <Select
         value={{
@@ -102,8 +132,9 @@ class App extends React.Component {
         }}
         onChange={this.selectedDocumentChange}
         options={options}
-        style={{}}
         isSearchable={false}
+        styles={styles}
+        menuIsOpen={true}
         className="documentSelectorContainer"
         classNamePrefix="documentSelector"
       />

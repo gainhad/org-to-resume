@@ -4,6 +4,11 @@
   CodeMirror.defineSimpleMode("org", {
     start: [
       {
+        regex: /(#\+TITLE: )(.*)/,
+        sol: true,
+        token: ["org-meta org-key org-title", "org-meta org-value org-title"]
+      },
+      {
         regex: /(\*\s)(.*?)(:[\S]+:|)$/,
         sol: true,
         token: [

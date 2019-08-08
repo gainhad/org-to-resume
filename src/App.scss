@@ -25,15 +25,32 @@
 		outline: none;
 	    }
 	}
+	&__menu {
+	    width: 200%;
+	    left: -50%;
+	}
 	&__indicator {
 	    padding: 0px 8px;
 	}
 	&__value-container {
 	}
+	&__option {
+	    display: flex;
+	    width: 50%;
+	    justify-content: space-between;
+	}
 	&__single-value {
 	    width: 95%;
 	    text-align: center;
 	    color: white;
+	}
+    }
+    .delete-document-button {
+	z-index: 10 !important;
+	display: float;
+	background: rgba(255, 0, 0, .7);
+	&:hover {
+	    background: rgba(255, 0, 0, .9);
 	}
     }
 }
@@ -110,7 +127,7 @@ h2 {
   height: 2.5em;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
   transition: 0.2s;
-  button {
+  .tool-bar-button {
     background: rgba(255, 255, 255, 0.2);
     overflow: hidden;
     outline: none;

@@ -5,7 +5,6 @@ import Select from "react-select";
 import "./App.scss";
 
 class App extends React.Component {
-  //this is a comment that I can't read
   constructor(props) {
     super(props);
     const selectedDocument = Number(localStorage.getItem("selectedDocument"));
@@ -13,14 +12,13 @@ class App extends React.Component {
       documents: [
         {
           title: "Demo 1",
-          text: initialText,
-          css: initialCSS
+          text: demoText[0],
+          css: demoCSS[0]
         },
         {
           title: "Demo 2",
-          text: `#+TITLE: Demo 2
-* This is the second demo`,
-          css: ""
+          text: demoText[1],
+          css: demoCSS[1]
         }
       ],
       selectedDocument: selectedDocument,
@@ -33,6 +31,8 @@ class App extends React.Component {
     this.toggleEditorMaximized = this.toggleEditorMaximized.bind(this);
     this.selectedDocumentChange = this.selectedDocumentChange.bind(this);
     this.documentChange = this.documentChange.bind(this);
+    this.deleteDocument = this.deleteDocument.bind(this);
+    this.resetDemo = this.resetDemo.bind(this);
   }
 
   documentChange(type, input) {
@@ -83,8 +83,45 @@ class App extends React.Component {
     });
   }
 
+  deleteDocument(index) {
+    let newSelectedDocument = 0;
+    if (index === this.state.selectedDocument) {
+      newSelectedDocument =
+        index === this.state.documents.length - 1 ? index - 1 : index;
+    } else {
+      newSelectedDocument =
+        this.state.selectedDocument <= index
+          ? this.state.selectedDocument
+          : this.state.selectedDocument - 1;
+    }
+    this.setState(state => ({
+      documents: state.documents.filter((doc, docIndex) => {
+        return docIndex !== index;
+      }),
+      selectedDocument: newSelectedDocument,
+      editorMaximized: state.editorMaximized
+    }));
+  }
+
+  resetDemo(index) {
+    this.setState(state => ({
+      ...state,
+      documents: state.documents.map((doc, docIndex) =>
+        docIndex === index
+          ? {
+              title: `Demo ${index + 1}`,
+              text: demoText[index],
+              css: demoCSS[index]
+            }
+          : doc
+      )
+    }));
+  }
+
   render() {
-    const currentDocument = this.state.documents[this.state.selectedDocument];
+    const currentDocument = this.state.documents[this.state.selectedDocument]
+      ? this.state.documents[this.state.selectedDocument]
+      : this.state.documents[0];
     const options = [
       {
         label: "Demos",
@@ -92,7 +129,8 @@ class App extends React.Component {
           ...this.state.documents.slice(0, 2).map((doc, index) => {
             return {
               value: index,
-              label: doc.title
+              label: doc.title,
+              groud: "demos"
             };
           })
         ]
@@ -102,38 +140,53 @@ class App extends React.Component {
         options: [
           ...this.state.documents.slice(2).map((doc, index) => {
             return {
-              value: index,
-              label: doc.title
+              value: index + 2,
+              label: doc.title ? doc.title : "untitled document",
+              group: "userDocuments"
             };
           }),
           {
             value: -1,
-            label: "New Document",
-            color: "rgba(0, 0, 0, .7)",
-            fontStyle: "italic",
-            background: "rgba(0, 0, 0, .04)"
+            label: "...New Document"
           }
         ]
       }
     ];
-    const styles = {
-      option: (styles, { data }) => ({
-        ...styles,
-        color: data.color ? data.color : null,
-        background: data.background ? data.background : null,
-        fontStyle: data.fontStyle ? data.fontStyle : null
-      })
+    const customOption = ({
+      innerProps,
+      label,
+      value,
+      data,
+      ...otherProps
+    }) => {
+      return (
+        <div>
+          <div {...innerProps}>{label}</div>
+          {data.group === "userDocuments" ? (
+            <button type="button" onClick={() => this.deleteDocument(value)}>
+              delete
+            </button>
+          ) : (
+            <button type="button" onClick={() => this.resetDemo(value)}>
+              reset
+            </button>
+          )}
+        </div>
+      );
     };
     const selector = (
       <Select
         value={{
           value: this.state.selectedDocument,
           label: currentDocument.title
+            ? currentDocument.title
+            : "untitled document"
         }}
+        components={{ Option: customOption }}
         onChange={this.selectedDocumentChange}
         options={options}
+        menuIsOpen={true}
         isSearchable={false}
-        styles={styles}
         className="documentSelectorContainer"
         classNamePrefix="documentSelector"
       />
@@ -163,7 +216,8 @@ class App extends React.Component {
   }
 }
 
-const initialText = `#+TITLE: Demo 1
+const demoText = [
+  `#+TITLE: Demo 1
 
 * John Smith :div_heading:name:
 ** john.smith@gmail.com :email:
@@ -209,10 +263,13 @@ SuperFun Camps
 | Skills                          | Relevant Coursework                |
 |---------------------------------+------------------------------------|
 | Skill 1, Skill 2, Skill3,       | BUS 101 - Introduction to Business |
-| Skill 4, Skill 5, Skill 6       | HIS 208 - Lunar History            |`;
+| Skill 4, Skill 5, Skill 6       | HIS 208 - Lunar History            |`,
+  `#+TITLE: Demo 2
+* This is the second demo`
+];
 
-const initialCSS = `
-.name {
+const demoCSS = [
+  `.name {
   text-align: center;
   border-bottom: 1px solid rgba(0, 0, 0, .3);
   margin: 10px 35%;
@@ -223,6 +280,8 @@ const initialCSS = `
   margin: 0px;
   padding: 0px;
   font-weight: normal;
-}`;
+}`,
+  ``
+];
 
 export default App;

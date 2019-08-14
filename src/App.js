@@ -229,6 +229,14 @@ class App extends React.Component {
         components={{ Option: customOption }}
         onChange={this.selectedDocumentChange}
         options={options}
+        styles={{
+          singleValue: (defualt, state) => {
+            console.log(state);
+            return {};
+          },
+          indicator: () => ({}),
+          indicatorSeparator: () => ({})
+        }}
         isSearchable={false}
         className="documentSelectorContainer"
         classNamePrefix="documentSelector"

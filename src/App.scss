@@ -11,12 +11,12 @@
 }
 
 .documentSelectorContainer {
-    width: 30%;
     height: 90%;
-    min-width: 200px;
+    width: auto;
+    grid-column: span 2;
     .documentSelector {
 	&__control {
-	    background: rgba(255, 255, 255, 0.2);
+	    background: none;
 	    border: none;
 	    border-radius: 3px;
 	    height: 100%;
@@ -27,11 +27,22 @@
 	    }
 	}
 	&__menu {
-	    width: 200%;
-	    left: -50%;
+	    position: fixed;
+	    width: 40vw;
+	    left: 30vw;
+	    top: 35px;
 	}
-	&__indicator {
-	    padding: 0px 8px;
+	&__dropdown-indicator {
+	    color: white;
+	    transition: transform .2s;
+	    background: rgba(255, 255, 255, .2);
+	    box-shadow: 2px 2px 2px rgba(0, 0, 0, .1);
+	    border-radius: 50%;
+	    padding: 2px;
+	    &:hover {
+		color: white;
+		transform: scale(1.2);
+	    }
 	}
 	&__value-container {
 	}
@@ -52,8 +63,8 @@
 	    flex-grow: 1;
 	}
 	&__single-value {
-	    width: 95%;
 	    text-align: center;
+	    font-size: 1.5em;
 	    color: white;
 	}
     }
@@ -141,11 +152,6 @@ h2 {
   left: 0;
   position: sticky;
   z-index: 5;
-  h2 {
-    margin: 0;
-    grid-column-start: 2;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
-  }
 }
 
 .tool-bar {
@@ -222,7 +228,7 @@ pre {
 
 #toggle-preview-content-button {
     position: sticky;
-    float: left;
+    float: right;
     top: 10px;
     margin: 10px;
     background: var(--blue);

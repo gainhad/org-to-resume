@@ -11,7 +11,7 @@ class TitleBar extends React.Component {
   render() {
     return (
       <div className="title-bar">
-        <h2>{this.props.title}</h2>
+        {this.props.selector}
         <button
           type="button"
           onClick={() =>
@@ -34,7 +34,6 @@ class TitleBar extends React.Component {
           <button className="tool-bar-button" onClick={this.props.saveFiles}>
             Download Text/CSS
           </button>
-          {this.props.selector}
           <button onClick={window.print} className="tool-bar-button">
             Print
           </button>

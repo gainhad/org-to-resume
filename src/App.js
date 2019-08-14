@@ -30,7 +30,8 @@ class App extends React.Component {
           ],
       selectedDocument: selectedDocument ? selectedDocument : 0,
       editorMaximized: true,
-      displayText: true
+      displayText: true,
+      isSelectMenuOpen: false
     };
     this.previewRef = React.createRef();
     this.toggleEditorMaximized = this.toggleEditorMaximized.bind(this);
@@ -230,16 +231,19 @@ class App extends React.Component {
         onChange={this.selectedDocumentChange}
         options={options}
         styles={{
-          singleValue: (defualt, state) => {
-            console.log(state);
-            return {};
-          },
+          singleValue: () => ({}),
           indicator: () => ({}),
           indicatorSeparator: () => ({})
         }}
         isSearchable={false}
-        className="documentSelectorContainer"
+        className={
+          this.state.isSelectMenuOpen
+            ? "documentSelectorContainer menuOpen"
+            : "documentSelectorContainer"
+        }
         classNamePrefix="documentSelector"
+        onMenuOpen={() => this.setState({ isSelectMenuOpen: true })}
+        onMenuClose={() => this.setState({ isSelectMenuOpen: false })}
       />
     );
     return (

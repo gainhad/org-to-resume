@@ -56,6 +56,9 @@ class Previewer extends React.Component {
           <style>{style}</style>
         </Helmet>
         <div id="preview-pane" className={this.props.hidden ? "hidden" : ""}>
+          <button onClick={this.onClick} id="toggle-preview-content-button">
+            Show {this.state.renderHTML ? "HTML" : "Document"}
+          </button>
           {preview}
         </div>
       </>

@@ -2,6 +2,8 @@ import React from "react";
 import Editor from "./components/editor";
 import Previewer from "./components/previewer";
 import Select from "react-select";
+import { saveAs } from "file-saver";
+import TitleBar from "./components/titleBar";
 import "./App.scss";
 
 class App extends React.Component {
@@ -26,20 +28,28 @@ class App extends React.Component {
               changed: false
             }
           ],
-      selectedDocument: selectedDocument,
-      editorMaximized: true
+      selectedDocument: selectedDocument ? selectedDocument : 0,
+      editorMaximized: true,
+      displayText: true
     };
+    this.previewRef = React.createRef();
     this.toggleEditorMaximized = this.toggleEditorMaximized.bind(this);
     this.selectedDocumentChange = this.selectedDocumentChange.bind(this);
     this.documentChange = this.documentChange.bind(this);
     this.deleteDocument = this.deleteDocument.bind(this);
     this.resetDemo = this.resetDemo.bind(this);
+    this.saveFiles = this.saveFiles.bind(this);
+    this.toggleText = this.toggleText.bind(this);
   }
 
   componentDidMount() {
     window.addEventListener("beforeunload", e => {
       localStorage.setItem("documents", JSON.stringify(this.state.documents));
+      localStorage.setItem("selectedDocument", this.state.selectedDocument);
     });
+  }
+  componentDidUnMount() {
+    window.removeEventListener("beforeunload");
   }
 
   documentChange(type, input) {
@@ -86,23 +96,25 @@ class App extends React.Component {
   }
 
   deleteDocument(index) {
-    let newSelectedDocument = 0;
-    if (index === this.state.selectedDocument) {
-      newSelectedDocument =
-        index === this.state.documents.length - 1 ? index - 1 : index;
-    } else {
-      newSelectedDocument =
-        this.state.selectedDocument <= index
-          ? this.state.selectedDocument
-          : this.state.selectedDocument - 1;
+    if (window.confirm("Are you sure you want to delete the document?")) {
+      let newSelectedDocument = 0;
+      if (index === this.state.selectedDocument) {
+        newSelectedDocument =
+          index === this.state.documents.length - 1 ? index - 1 : index;
+      } else {
+        newSelectedDocument =
+          this.state.selectedDocument <= index
+            ? this.state.selectedDocument
+            : this.state.selectedDocument - 1;
+      }
+      this.setState(state => ({
+        documents: state.documents.filter((doc, docIndex) => {
+          return docIndex !== index;
+        }),
+        selectedDocument: newSelectedDocument,
+        editorMaximized: state.editorMaximized
+      }));
     }
-    this.setState(state => ({
-      documents: state.documents.filter((doc, docIndex) => {
-        return docIndex !== index;
-      }),
-      selectedDocument: newSelectedDocument,
-      editorMaximized: state.editorMaximized
-    }));
   }
 
   resetDemo(index) {
@@ -119,6 +131,24 @@ class App extends React.Component {
           : doc
       )
     }));
+  }
+
+  toggleText() {
+    this.setState({
+      displayText: !this.state.displayText
+    });
+  }
+
+  saveFiles() {
+    const currentDocument = this.state.documents[this.state.selectedDocument];
+    const text = new Blob([currentDocument.text], {
+      type: "text/plain;charset=utf-8"
+    });
+    const css = new Blob([currentDocument.css], {
+      type: "text/plain;charset=utf-8"
+    });
+    saveAs(text, `${currentDocument.title}.org`);
+    saveAs(css, `${currentDocument.title}.css`);
   }
 
   render() {
@@ -209,13 +239,24 @@ class App extends React.Component {
         id="App"
         className={this.state.editorMaximized ? "editor-maximized" : ""}
       >
+        <TitleBar
+          title="Editor"
+          toggleMaximized={this.toggleEditorMaximized}
+          editorMaximized={this.state.editorMaximized}
+          showText={this.state.displayText}
+          toggleText={this.toggleText}
+          selector={selector}
+          previewRef={this.previewRef}
+          saveFiles={this.saveFiles}
+        />
         <Editor
           text={currentDocument.text}
           css={currentDocument.css}
-          documentChange={this.documentChange}
-          toggleMaximized={this.toggleEditorMaximized}
           isMaximized={this.state.editorMaximized}
           selector={selector}
+          documentChange={this.documentChange}
+          saveText={this.saveText}
+          showText={this.state.displayText}
         />
         <Previewer
           text={currentDocument.text}
@@ -223,6 +264,7 @@ class App extends React.Component {
           title={currentDocument.title}
           documentChange={this.documentChange}
           hidden={this.state.editorMaximized}
+          previewRef={this.previewRef}
         />
       </div>
     );

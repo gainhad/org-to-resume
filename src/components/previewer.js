@@ -2,8 +2,6 @@ import React from "react";
 import { Helmet } from "react-helmet";
 import beautify from "js-beautify";
 import { toAST, toHTML } from "../parser";
-import ReactToPrint from "react-to-print";
-import TitleBar from "./titleBar";
 
 class Previewer extends React.Component {
   constructor(props) {
@@ -58,17 +56,6 @@ class Previewer extends React.Component {
           <style>{style}</style>
         </Helmet>
         <div id="preview-pane" className={this.props.hidden ? "hidden" : ""}>
-          <TitleBar title="Preview">
-            <ReactToPrint
-              trigger={() => (
-                <button className="tool-bar-button">Print!</button>
-              )}
-              content={() => this.componentRef}
-            />
-            <button className="toggle tool-bar-button" onClick={this.onClick}>
-              Show {this.state.renderHTML ? "HTML" : "Preview"}
-            </button>
-          </TitleBar>
           {preview}
         </div>
       </>

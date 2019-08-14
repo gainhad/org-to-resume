@@ -29,7 +29,7 @@ class App extends React.Component {
             }
           ],
       selectedDocument: selectedDocument ? selectedDocument : 0,
-      editorMaximized: true,
+      editorMaximized: false,
       displayText: true,
       isSelectMenuOpen: false
     };

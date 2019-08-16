@@ -41,6 +41,7 @@ class Editor extends React.Component {
           options={{
             mode: mode,
             lineWrapping: true,
+            lineNumbers: false,
             theme: "gruvbox-light"
           }}
           value={value}
@@ -48,6 +49,9 @@ class Editor extends React.Component {
             onChange(value);
           }}
           onChange={(editor, data, value) => {}}
+          onViewportChange={editor => {
+            editor.refresh();
+          }}
         />
       </div>
     );

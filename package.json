@@ -17,6 +17,7 @@
     "orga-rehype": "^1.1.1",
     "orga-unified": "^1.1.1",
     "puppeteer": "^1.17.0",
+    "re-resizable": "^6.0.0",
     "react": "^16.8.6",
     "react-codemirror2": "^6.0.0",
     "react-dom": "^16.8.6",

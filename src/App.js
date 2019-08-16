@@ -334,7 +334,8 @@ SuperFun Camps
 | Skills                          | Relevant Coursework                |
 |---------------------------------+------------------------------------|
 | Skill 1, Skill 2, Skill3,       | BUS 101 - Introduction to Business |
-| Skill 4, Skill 5, Skill 6       | HIS 208 - Lunar History            |`
+| Skill 4, Skill 5, Skill 6       | HIS 208 - Lunar History            |`,
+  `#+TITLE: Demo Two`
 ];
 
 const demoCSS = [
@@ -364,6 +365,7 @@ h2 {
 }
 
 .section h1 {
+  width: calc(100% + 30px);
   position: relative;
   right: 30px;
   margin-bottom: .2rem;
@@ -410,9 +412,9 @@ th {
 
 table {
   width: 100%;
-
   border-spacing: 50px 0px;
-}`
+}`,
+  ``
 ];
 
 export default App;

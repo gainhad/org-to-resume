@@ -35,7 +35,7 @@ class TitleBar extends React.Component {
             Download Text/CSS
           </button>
           <button onClick={window.print} className="tool-bar-button">
-            Print
+            Print/Save PDF
           </button>
           <button
             className="toggle tool-bar-button"

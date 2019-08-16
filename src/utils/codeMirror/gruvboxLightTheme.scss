@@ -32,12 +32,12 @@
 
 .cm-s-gruvbox-light {
 	.CodeMirror-gutters {
-		background: var(--tan);
-		color: var(--grey);
-		border-right: 0px;
+		background: var(--grey);
+	  color: var(--grey);
+	  border-right: 0px;
 	}
 	.CodeMirror-linenumber {
-		color: var(--grey);
+		color: var(--brown);
 	}
 	.CodeMirror-cursor {
 		border-left: 1px solid var(--brown);

@@ -24,13 +24,6 @@ class TitleBar extends React.Component {
         <div
           className={"tool-bar" + (this.state.toolBarVisible ? "" : " hidden")}
         >
-          <button
-            type="button"
-            className="tool-bar-button"
-            onClick={this.props.toggleText}
-          >
-            Show {this.props.showText ? "CSS" : "Text"}
-          </button>
           <button className="tool-bar-button" onClick={this.props.saveFiles}>
             Download Text/CSS
           </button>

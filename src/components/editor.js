@@ -37,6 +37,14 @@ class Editor extends React.Component {
     }
     return (
       <div id="edit-pane">
+        <button
+          className="toggle-button"
+          id="toggle-editor-content-button"
+          type="button"
+          onClick={this.props.toggleText}
+        >
+          Show {this.props.showText ? "CSS" : "Text"}
+        </button>
         <CodeMirror
           options={{
             mode: mode,

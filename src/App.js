@@ -257,7 +257,6 @@ class App extends React.Component {
           toggleMaximized={this.toggleEditorMaximized}
           editorMaximized={this.state.editorMaximized}
           showText={this.state.displayText}
-          toggleText={this.toggleText}
           selector={selector}
           previewRef={this.previewRef}
           saveFiles={this.saveFiles}
@@ -268,6 +267,7 @@ class App extends React.Component {
           isMaximized={this.state.editorMaximized}
           selector={selector}
           documentChange={this.documentChange}
+          toggleText={this.toggleText}
           saveText={this.saveText}
           showText={this.state.displayText}
         />

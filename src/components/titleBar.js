@@ -11,6 +11,13 @@ class TitleBar extends React.Component {
   render() {
     return (
       <div className="title-bar">
+        <button
+          type="button"
+          onClick={this.props.showHelpModal}
+          id="help-button"
+        >
+          ?
+        </button>
         {this.props.selector}
         <button
           type="button"

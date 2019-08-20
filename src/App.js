@@ -5,6 +5,8 @@ import Select from "react-select";
 import { saveAs } from "file-saver";
 import TitleBar from "./components/titleBar";
 import { demoText, demoCSS } from "./demoContent";
+import ReactModal from "react-modal";
+import HelpModal from "./components/helpModal";
 import "./App.scss";
 
 class App extends React.Component {
@@ -32,7 +34,8 @@ class App extends React.Component {
       selectedDocument: selectedDocument ? selectedDocument : 0,
       editorMaximized: false,
       displayText: true,
-      isSelectMenuOpen: false
+      isSelectMenuOpen: false,
+      helpModalOpen: true
     };
     this.previewRef = React.createRef();
     this.toggleEditorMaximized = this.toggleEditorMaximized.bind(this);
@@ -260,6 +263,7 @@ class App extends React.Component {
           selector={selector}
           previewRef={this.previewRef}
           saveFiles={this.saveFiles}
+          showHelpModal={() => this.setState({ helpModalOpen: true })}
         />
         <Editor
           text={currentDocument.text}
@@ -279,6 +283,17 @@ class App extends React.Component {
           hidden={this.state.editorMaximized}
           previewRef={this.previewRef}
         />
+        <ReactModal
+          isOpen={this.state.helpModalOpen}
+          className="help-modal"
+          overlayClassName="overlay"
+          contentLabel="help modal"
+          onRequestClose={() => this.setState({ helpModalOpen: false })}
+        >
+          <HelpModal
+            closeModal={() => this.setState({ helpModalOpen: false })}
+          />
+        </ReactModal>
       </div>
     );
   }

@@ -22,9 +22,16 @@ class Previewer extends React.Component {
   render() {
     const style = this.props.css
       .split("\n")
-      .map(e =>
-        e && e[0] !== " " && e[0] !== "}" && e[0] !== "@" ? "#preview " + e : e
-      )
+      .map(e => {
+        if (e && e[0] !== " " && e[0] !== "}" && e[0] !== "@") {
+          return e
+            .split(", ")
+            .map(subE => "#preview " + subE)
+            .join(", ");
+        } else {
+          return e;
+        }
+      })
       .join("\n");
     let AST = null;
     let parsedText = "";

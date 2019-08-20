@@ -13,6 +13,7 @@ class App extends React.Component {
     super(props);
     const selectedDocument = Number(localStorage.getItem("selectedDocument"));
     const userDocuments = JSON.parse(localStorage.getItem("documents"));
+    const helpModalOpen = localStorage.getItem("helpModalOpen");
     this.state = {
       documents: userDocuments
         ? [...userDocuments]
@@ -34,7 +35,7 @@ class App extends React.Component {
       editorMaximized: false,
       displayText: true,
       isSelectMenuOpen: false,
-      helpModalOpen: true
+      helpModalOpen: helpModalOpen === "false" ? false : true
     };
     this.previewRef = React.createRef();
     this.toggleEditorMaximized = this.toggleEditorMaximized.bind(this);
@@ -50,6 +51,7 @@ class App extends React.Component {
     window.addEventListener("beforeunload", e => {
       localStorage.setItem("documents", JSON.stringify(this.state.documents));
       localStorage.setItem("selectedDocument", this.state.selectedDocument);
+      localStorage.setItem("helpModalOpen", this.state.helpModalOpen);
     });
   }
   componentDidUnMount() {

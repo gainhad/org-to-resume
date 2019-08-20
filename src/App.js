@@ -5,7 +5,6 @@ import Select from "react-select";
 import { saveAs } from "file-saver";
 import TitleBar from "./components/titleBar";
 import { demoText, demoCSS } from "./demoContent";
-import ReactModal from "react-modal";
 import HelpModal from "./components/helpModal";
 import "./App.scss";
 
@@ -283,17 +282,10 @@ class App extends React.Component {
           hidden={this.state.editorMaximized}
           previewRef={this.previewRef}
         />
-        <ReactModal
+        <HelpModal
           isOpen={this.state.helpModalOpen}
-          className="help-modal"
-          overlayClassName="overlay"
-          contentLabel="help modal"
-          onRequestClose={() => this.setState({ helpModalOpen: false })}
-        >
-          <HelpModal
-            closeModal={() => this.setState({ helpModalOpen: false })}
-          />
-        </ReactModal>
+          closeModal={() => this.setState({ helpModalOpen: false })}
+        />
       </div>
     );
   }

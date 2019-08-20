@@ -1,0 +1,85 @@
+.helpModal {
+  display: grid;
+  grid-template-rows: min-content 1fr;
+  position: absolute;
+  background: rgb(255,255,242);
+  top: 5vh;
+  left: 10vw;
+  right: 10vw;
+  bottom: 5vh;
+  border: 1px solid #ccc;
+  overflow: auto;
+  border-radius: 4px;
+  box-shadow: 2px 2px 4px 4px rgba(0, 0, 0, .2);
+  outline: none;
+}
+
+.closeButton {
+  padding: 8px;
+  outline: none;
+  background: none;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, .2);
+  font-size: 1rem;
+  background: rgba(7, 102, 120, 1);
+  color: white;
+  transition: background .2s;
+  &:hover {
+    background: rgba(7, 102, 120, .8);
+  }
+}
+
+.titleBar {
+  display: flex;
+  padding: 10px;
+  h2 {
+    color: black;
+    text-align: center;
+    border-bottom: 1px solid rgba(0, 0, 0, .3);
+    margin: 0px 30%;
+  }
+}
+
+.topHeading {
+  margin-top: 0;
+}
+
+.content {
+  height: 100%;
+  overflow: auto;
+  padding: 10px 40px;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+    background: rgba(0, 0, 0, .7);
+}
+
+.code {
+  background: rgba(0, 0, 0, .2);
+}
+
+.orgMarkupBasics {
+  margin-top: 20px;
+  margin-left: 2rem;
+  h4 {
+    margin: 0px;
+  }
+}
+
+p {
+  margin: 5px 0 5px 2rem;
+}
+
+.example {
+  h5 {
+    margin: 0 0 0 2rem;
+    font-size: 1rem;
+  }
+}

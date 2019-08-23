@@ -299,11 +299,15 @@ pre {
 	display: none;
     }
     #preview-pane {
-	width: 100vw;
+      width: 100vw;
+      height: 100vh;
 	&.hidden {
 	    display: block;
 	}
     }
+  #resume {
+    height: 100%;
+  }
     #App {
 	display: block;
     }

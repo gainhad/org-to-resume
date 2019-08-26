@@ -300,13 +300,13 @@ pre {
     }
     #preview-pane {
       width: 100vw;
-      height: 100vh;
-	&.hidden {
-	    display: block;
-	}
+      min-height: 100vh;
+      &.hidden {
+	display: block;
+      }
     }
   #resume {
-    height: 100%;
+    min-height: 100vh;
   }
     #App {
 	display: block;
